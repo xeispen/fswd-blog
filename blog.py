@@ -114,6 +114,7 @@ class Post(db.Model):
         #This does not seem to be working correctly
         comments = Comments.return_comments(self.key().id())
         self.comments = comments
+        #test git
         return render_str("post.html", p = self)
 
     def increment(self):

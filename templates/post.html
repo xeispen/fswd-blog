@@ -1,0 +1,56 @@
+<div class="post">
+    <div class="post-heading">
+        <div class="post-title">
+            {{p.subject}}
+        </div>
+
+        <div class="post-date">
+            {{p.created.strftime("%b %d, %Y")}}
+        </div>
+    </div>
+
+    <div class="post-content">
+        {{p._render_text | safe}}
+    </div>
+
+    <div class="post-footer">
+        <div  class="likes">
+            {{p.likes}} likes
+        </div>
+        <a href="/blog/delete/{{p.key().id()}}">
+            <div class="button">delete</div>
+        </a>
+        <a href="/blog/editpost/{{p.key().id()}}">
+            <div class="button">edit</div>
+        </a>
+        <a href="/blog/unlikepost/{{p.key().id()}}">
+            <div class="button">unlike</div>
+        </a>
+        <a href="/blog/likepost/{{p.key().id()}}">
+            <div class="button">like</div>
+        </a>
+        <input type="hidden" name="id" value="{{p.key().id()}}">
+        <input type="hidden" name="user" value="{{p.created_by.name}}">
+    </div>
+
+    <div class="post-comments">
+        <div>comments:</div>
+        <div>
+            {% block content %}
+
+            {% endblock %}
+        </div>
+
+        <div>
+            <form action="/blog/addcomment/{{p.key().id()}}" method="post">
+              <label>
+                <input type="text" name="comment" value="enter comments here">
+              </label>
+              <input type="submit">
+            </form>
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,11 @@
+{% extends "post.html" %}
+
+{% block content %}
+
+    {% for c in p.comments %}
+        {{ c.render() | safe }}
+        <br><br>
+    {% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #333;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+}
+
+label {
+  display: block;
+  font-size: 20px;
+}
+
+button {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    font-size: 14px;
+}
+
+label + label {
+    margin-top: 20px;
+}
+
+input[type=text] {
+    width: 500px;
+    font-size: 20px;
+    padding: 2px;
+    font-family: monospace;
+}
+
+textarea {
+  width: 500px;
+  height: 400px;
+  font-size: 17px;
+  font-family: monospace;
+}
+
+input[type=submit] {
+  font-size: 24px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main-title {
+    display: block;
+    color: #222;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+
+.post + .post {
+    margin-top: 15px;
+}
+
+.post-heading {
+    position: relative;
+    border-bottom: 3px solid #666;
+}
+
+.post-footer {
+    padding-top: 10px;
+}
+
+
+.post-comments {
+    padding-top: 20px;
+    padding-left: 30px;
+}
+
+
+.post-comments input[type=text]{
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+
+.post-footer .likes {
+    float: left;
+}
+
+.post-footer .button {
+    float: right;
+}
+
+.button {
+    display: inline-block;
+    padding-left: 5px;
+}
+.post-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.post-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+
+}
+
+.post-content {
+    margin-top: 5px;
+}
+

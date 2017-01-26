@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {% for c in p.comments %}
+    {% for c in comments %}
         {{ c.render() | safe }}
         <br><br>
     {% endfor %}

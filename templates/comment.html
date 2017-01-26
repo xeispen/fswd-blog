@@ -1,4 +1,8 @@
-<div class="comment">
-    <div>{{comment | safe}}</div>
+<div>
+    <div class="comment-header">
+        <div class="comment-name">{{c._user}} @ </div>
+        <div class="comment-date">{{c.created.strftime("%b %d, %Y")}}</div>
+    </div>
+    <div class="comment-content">{{c._render_text | safe}}</div>
 </div>
 

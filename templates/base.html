@@ -7,9 +7,18 @@
 </head>
 
 <body>
-    <a href="/blog" class="main-title">
-    My Blog
-    </a>
+    <a href="/blog" class="main-title">Blogify</a>
+
+    <nav class="menu">
+        <a class = "link" href="/blog">Blogs</a>
+        <a class = "link" href="/blog/myblog">My Blog</a>
+        <a class = "link" href="/blog/newpost">New Post</a>
+        <a class = "link" href="/signup">Sign Up</a>
+        <a class = "link" href="/login">Login</a>
+        <a class = "link" href="/logout">Logout</a>
+    </nav>
+
+    <br>
     <div id="content">
         {% block content %}
         {% endblock %}

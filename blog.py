@@ -111,11 +111,12 @@ class Post(db.Model):
     def render(self):
         #adds html line breaks
         self._render_text = self.content.replace('\n', '<br>')
-        #This does not seem to be working correctly
+        self._name = self.created_by.name
         comments = Comments.return_comments(self.key().id())
-        self.comments = comments
-        #test git
-        return render_str("post.html", p = self)
+
+        params = dict(p = self, comments = comments)
+        return render_str("post.html", **params)
+
 
     def increment(self):
         prev_like = self.likes
@@ -146,11 +147,14 @@ class Comments(db.Model):
     comment = db.TextProperty(required = True)
     user = db.IntegerProperty(required = True)
     post = db.IntegerProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
 
     def render(self):
         #adds html line breaks
         self._render_text = self.comment.replace('\n', '<br>')
-        return render_str("comment.html", comment = self)
+        user_inst = User.by_id(self.user)
+        self._user = user_inst.name
+        return render_str("comment.html", c = self)
 
     @classmethod
     def return_comments(cls, pid):
@@ -229,6 +233,15 @@ class BlogFront(BlogHandler):
         posts.ancestor(blog_key())
         self.render("front.html", posts = posts)
 
+    def post(self):
+        comment = self.request.get('comment')
+        post_id = self.request.get('id')
+        uid = self.read_secure_cookie('user_id')
+        c = Comments(parent = blog_key(), comment = comment, user = int(uid), post = int(post_id))
+        c.put()
+        self.redirect('/blog')
+
+
 
 class PostPage(BlogHandler):
     def get(self, post_id):
@@ -243,23 +256,13 @@ class PostPage(BlogHandler):
 
         self.render("permalink.html", post = post)
 
-
-class AddComment(PostPage):
-    def get(self, post_id):
-        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-        #look up particular post
-        post = db.get(key)
-        self.render("permalink.html", post = post)
-
-    def post(self, post_id):
+    def post(self):
         comment = self.request.get('comment')
-        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-        post = db.get(key)
-        #returns the user id
+        post_id = self.request.get('id')
         uid = self.read_secure_cookie('user_id')
-        c = Comments(comment = comment, user = int(uid), post = int(post_id))
+        c = Comments(parent = blog_key(), comment = comment, user = int(uid), post = int(post_id))
         c.put()
-        self.render("permalink.html", post = post)
+        self.redirect('/blog')
 
 
 #page displaying each user's own blog posts
@@ -270,6 +273,14 @@ class MyBlog(BlogHandler):
         posts.ancestor(blog_key())
         self.render("front.html", posts = posts)
 
+
+    def post(self):
+        comment = self.request.get('comment')
+        post_id = self.request.get('id')
+        uid = self.read_secure_cookie('user_id')
+        c = Comments(parent = blog_key(), comment = comment, user = int(uid), post = int(post_id))
+        c.put()
+        self.redirect('/blog/myblog')
 
 
 
@@ -514,7 +525,6 @@ app = webapp2.WSGIApplication([('/', MainPage),
                                ('/logout', Logout),
                                ('/blog/?', BlogFront),
                                ('/blog/([0-9]+)', PostPage),
-                               ('/blog/addcomment/([0-9]+)', AddComment),
                                ('/blog/newpost', NewPost),
                                ('/blog/delete/([0-9]+)', DeletePost),
                                ('/blog/editpost/([0-9]+)', EditPost),

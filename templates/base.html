@@ -1,28 +1,43 @@
 <!DOCTYPE html>
+<!-- base html file for all pages of blog -->
 <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Blogify</title>
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
 
-<head>
-    <link type="text/css" rel="stylesheet" href="/static/main.css" />
-    <title>My Blog</title>
-</head>
+    <div class="container">
+        <!-- navigation bar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a class = "link" href="/blog/">Blogify</a></li>
+                    <li><a class = "link" href="/blog/myblog">My Blog</a></li>
+                    <li><a class = "link" href="/blog/newpost">New Post</a></li>
+                    <li><a class = "link" href="/blog/logout">Logout</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/blog/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="/blog/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </nav>
 
-<body>
-    <a href="/blog" class="main-title">Blogify</a>
+        <!-- page break -->
+        <br>
 
-    <nav class="menu">
-        <a class = "link" href="/blog">Blogs</a>
-        <a class = "link" href="/blog/myblog">My Blog</a>
-        <a class = "link" href="/blog/newpost">New Post</a>
-        <a class = "link" href="/signup">Sign Up</a>
-        <a class = "link" href="/login">Login</a>
-        <a class = "link" href="/logout">Logout</a>
-    </nav>
+        <!-- jinja template block -->
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
 
-    <br>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
+
+        <script src=static/js/jquery-3.1.1.min.js></script>
+        <script src=static/js/bootstrap.min.js></script>
     </div>
-</body>
 
 </html>

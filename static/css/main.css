@@ -55,6 +55,14 @@ a {
     color: black;
 }
 
+.label {
+    text-align: right
+}
+
+.error {
+    color: red
+}
+
 .menu{
     list-style-type: none;
     margin: 0;

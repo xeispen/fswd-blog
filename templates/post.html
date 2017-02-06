@@ -1,55 +1,64 @@
-<div class="post">
-    <div class="post-heading">
-        <div class="post-title">
-            {{p.subject}}
+<!-- each instance of this block is a single blog post and comments -->
+<html>
+    <div class="post">
+        <!-- header of post -->
+        <div class="post-heading">
+            <!-- subject of post -->
+            <h3>{{p.subject}}</h3>
+            <!-- date of post -->
+            <p class="lead">by {{p._name}}</p>
+                <hr>
+            <p>
+                <span class="glyphicon glyphicon-time"></span>
+                Posted on {{p.created.strftime("%b %d, %Y %H:%M")}}
+            </p>
+            <hr>
         </div>
-        <div class="post-date">
-            {{p._name}} @ {{p.created.strftime("%b %d, %Y")}}
-        </div>
-    </div>
+        <!-- content of post -->
+        <div class="post-content">{{p._render_text | safe}}</div>
 
-    <div class="post-content">
-        {{p._render_text | safe}}
-    </div>
-
-    <div class="post-footer">
-        <div  class="likes">
-            {{p.likes}} likes
+        <!-- footer of post -->
+        <div class="btn-group post-footer row">
+            <!-- delete button -->
+            <div>
+                <a class="btn btn-default pull-right"
+                href="/blog/delete/{{p.key().id()}}"><span class="glyphicon glyphicon-trash"></span></a>
+                <!-- edit button -->
+                <a class="btn btn-default pull-right"
+                href="/blog/editpost/{{p.key().id()}}"><span class="glyphicon glyphicon-edit"></span></a>
+                <!-- unlike button -->
+                <a class="btn btn-default pull-right"
+                href="/blog/unlikepost/{{p.key().id()}}"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+                <!-- like button -->
+                <a class="btn btn-default pull-right"
+                href="/blog/likepost/{{p.key().id()}}"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                <!-- # of likes -->
+                <div class="likes"><span class="badge">{{p.likes}} Likes</span></div>
+            </div>
         </div>
-        <a href="/blog/delete/{{p.key().id()}}">
-            <div class="button">delete</div>
-        </a>
-        <a href="/blog/editpost/{{p.key().id()}}">
-            <div class="button">edit</div>
-        </a>
-        <a href="/blog/unlikepost/{{p.key().id()}}">
-            <div class="button">unlike</div>
-        </a>
-        <a href="/blog/likepost/{{p.key().id()}}">
-            <div class="button">like</div>
-        </a>
+        <!-- hidden input with name of poster -->
         <input type="hidden" name="user" value="{{p.created_by.name}}">
-    </div>
-
-    <div class="post-comments">
-        <div>
-        {% for c in comments %}
-            {{ c.render() | safe }}
-            <br>
-        {% endfor %}
+        <hr>
+        <!-- comment section of post -->
+        <div class="post-comments">
+            <!-- comments form -->
+            <div class="well">
+                <form method="post">
+                    <div class="form-group">
+                        <textarea name="comment" class="form-control" rows="3">Leave a comment</textarea>
+                        <input type="hidden" name="id" value="{{p.key().id()}}">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <!-- comments of post -->
+            <div>
+                {% for c in comments %}
+                    {{ c.render() | safe }}
+                    <br>
+                {% endfor %}
+            </div>
         </div>
-
-        <div>
-            <form method="post">
-              <label>
-                <input type="text" name="comment" value="enter comments here">
-                <input type="hidden" name="id" value="{{p.key().id()}}">
-              </label>
-              <input type="submit">
-            </form>
-        </div>
-
+        <hr>
     </div>
-
-</div>
-
+</html>

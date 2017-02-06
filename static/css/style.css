@@ -1,0 +1,49 @@
+img, embed, object, video {
+    max-width: 100%;
+}
+
+
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+h2 {
+
+}
+
+.likes {
+    position: absolute;
+    top: 7px;
+}
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+.post-footer .btn{
+    border: none;
+}
+
+.text-muted {
+    color: #747704;
+}
+
+
+.text-thin {
+    font-weight: 100;
+}
+
+
+.title-super {
+    font-size: 70px;
+}
+
+
+.title-logo{
+    margin-top: 20px;
+}
+

@@ -1,8 +1,13 @@
-<div>
-    <div class="comment-header">
-        <div class="comment-name">{{c._user}} @ </div>
-        <div class="comment-date">{{c.created.strftime("%b %d, %Y")}}</div>
+<!-- each instance of this block is a single blog comment -->
+<html>
+    <div class="media-body">
+        <!-- header of comment -->
+        <h4 class="media-heading">
+            {{c._user}}
+            <!-- comment date and time -->
+            <small class="comment-date">{{c.created.strftime("%b %d, %Y %H:%M")}}</small>
+        </h4>
+        <!-- content of comment -->
+        <div class="comment-content">{{c._render_text | safe}}</div>
     </div>
-    <div class="comment-content">{{c._render_text | safe}}</div>
-</div>
-
+</html>

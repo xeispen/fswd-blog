@@ -1,11 +1,9 @@
 {% extends "post.html" %}
 
+<!-- jinja template block -->
 {% block content %}
-
     {% for c in comments %}
         {{ c.render() | safe }}
         <br><br>
     {% endfor %}
-
-
 {% endblock %}

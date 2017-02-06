@@ -1,21 +1,26 @@
 {% extends "base.html" %}
 
+<!-- jinja template block -->
 {% block content %}
-  <h2>edit post</h2>
-
-    <form method="post">
-      <label>
-        <div>subject</div>
-        <input type="text" name="subject" value="{{subject}}">
-      </label>
-
-      <label>
-        <div>blog</div>
-        <textarea name="content">{{content}}</textarea>
-      </label>
-
-      <div class="error">{{error}}</div>
-
-      <input type="submit">
-    </form>
+<html>
+    <body>
+        <!-- edit post form -->
+        <form method="post">
+            <h2>Edit Post</h2>
+            <!-- subject of post -->
+            <div class="form-group">
+                <label for="sub">Subject</label>
+                <input type="text" name="subject" class="form-control" id="sub" value="{{subject}}">
+            </div>
+            <!-- content of post -->
+            <div class="form-group">
+                <label for="post">Post</label>
+                <textarea name="content" class="form-control" rows="5" id="post">{{content}}</textarea>
+            </div>
+            <!-- submit button -->
+            <div class="error">{{error}}</div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </body>
+</html>
 {% endblock %}

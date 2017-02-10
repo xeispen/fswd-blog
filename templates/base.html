@@ -20,8 +20,12 @@
                     <li><a class = "link" href="/blog/logout">Logout</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/blog/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="/blog/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% if user %}
+                        <li><a href="/blog/profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                    {% else %}
+                        <li><a href="/blog/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="/blog/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

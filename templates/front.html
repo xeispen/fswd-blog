@@ -4,7 +4,7 @@
 {% block content %}
 
     {% for p in posts %}
-        {{ p.render() | safe }}
+        {{ p.render(uid) | safe }}
         <br>
     {% endfor %}
 

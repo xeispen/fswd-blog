@@ -196,7 +196,7 @@ class Post(db.Model):
     last_modified = db.DateTimeProperty(auto_now = True)
     created_by = db.ReferenceProperty(User, collection_name = 'user_posts')
 
-    def render(self):
+    def render(self, uid):
         """Retrieves and renders individual posts and comments"""
 
         # adds html line breaks
@@ -206,7 +206,7 @@ class Post(db.Model):
         # finds the comments of the post
         comments = Comments.return_comments(self.key().id())
         # creates a dictionaty of post and comments for rendering
-        params = dict(p = self, comments = comments)
+        params = dict(p = self, comments = comments, uid = uid)
         return render_str("post.html", **params)
 
 
@@ -293,13 +293,19 @@ class BlogHandler(webapp2.RequestHandler):
         cookie_val = self.request.cookies.get(name)
         return cookie_val and check_secure_val(cookie_val)
 
-
     #function sets the cookie
     def login(self, user):
         self.set_secure_cookie('user_id', str(user.key().id()))
 
+
     def logout(self):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
+
+    def uid(self):
+        if self.user:
+            return self.user.key().id()
+        else:
+            return None
 
     #checks if user is logged in or not
     def initialize(self, *a, **kw):
@@ -325,7 +331,8 @@ class BlogFront(BlogHandler):
         #posts = db.GqlQuery("SELECT * FROM Post ORDER BY created desc LIMIT 10")
         #ancestor query
         posts.ancestor(blog_key())
-        self.render("front.html", posts = posts)
+        params = dict(posts = posts, uid = self.uid())
+        self.render("front.html", **params)
 
     def post(self):
         comment = self.request.get('comment')
@@ -347,12 +354,11 @@ class PostPage(BlogHandler):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         #look up particular post
         post = db.get(key)
-
         if not post:
             self.error(404)
             return
-
-        self.render("permalink.html", post = post)
+        params = dict(post = post, uid = self.uid())
+        self.render("permalink.html", **params)
 
     def post(self, post_id):
         comment = self.request.get('comment')
@@ -374,7 +380,8 @@ class MyBlog(BlogHandler):
         if self.user:
             posts = self.user.user_posts.order('-created')
             posts.ancestor(blog_key())
-            self.render("front.html", posts = posts)
+            params = dict(posts = posts, uid = self.uid())
+            self.render("front.html", **params)
         else:
             self.redirect('/blog/signup')
 
@@ -466,7 +473,7 @@ class EditPost(BlogHandler):
                 self.redirect('/blog/%s' % str(post.key().id()))
             else:
                 error = "subject and content, please!"
-                self.render("editpost.html", subject = subject, content = content, error = error)
+                self.render("editpost.html", pid = str(post_id), subject = subject, content = content, error = error)
         else:
             self.redirect('/blog/signup')
 
@@ -599,7 +606,8 @@ class WelcomeBlogger(BlogHandler):
     def get(self):
         if self.user:
             #self.user.name declared in inititalize function
-            self.render('welcome.html', username = self.user.name)
+            #self.render('welcome.html', username = self.user.name)
+            self.redirect('/blog/')
         else:
             self.redirect('/blog/signup')
 

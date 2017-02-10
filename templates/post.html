@@ -21,17 +21,22 @@
         <div class="btn-group post-footer row">
             <!-- delete button -->
             <div>
+            {% if uid == p.created_by.key().id() %}
+                <!-- delete button -->
                 <a class="btn btn-default pull-right"
                 href="/blog/delete/{{p.key().id()}}"><span class="glyphicon glyphicon-trash"></span></a>
                 <!-- edit button -->
                 <a class="btn btn-default pull-right"
                 href="/blog/editpost/{{p.key().id()}}"><span class="glyphicon glyphicon-edit"></span></a>
+            {% elif uid %}
                 <!-- unlike button -->
                 <a class="btn btn-default pull-right"
                 href="/blog/unlikepost/{{p.key().id()}}"><span class="glyphicon glyphicon-thumbs-down"></span></a>
                 <!-- like button -->
                 <a class="btn btn-default pull-right"
                 href="/blog/likepost/{{p.key().id()}}"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+            {% else %}
+            {% endif %}
                 <!-- # of likes -->
                 <div class="likes"><span class="badge">{{p.likes}} Likes</span></div>
             </div>

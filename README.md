@@ -14,6 +14,8 @@ This project is a multi-user blog that features authentication for users and all
 # Files
 app.yaml
 blog.py
+helper.py
+model.py
 /static
 /templates
 

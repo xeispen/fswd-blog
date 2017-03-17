@@ -44,25 +44,27 @@
         <br>
         <!-- hidden input with name of poster -->
         <input type="hidden" name="user" value="{{p.created_by.name}}">
-        <h4 class="comment-header">Comments</h4>
-        <!-- comment section of post -->
-        <div class="post-comments">
-            <!-- comments of post -->
-            <div>
-                {% for c in comments %}
-                    {{ c.render(uid) | safe }}
-                    <br>
-                {% endfor %}
-            </div>
-            <!-- comments form -->
-            <div class="well">
-                <form method="post">
-                    <div class="form-group">
-                        <textarea name="comment" class="form-control" rows="3">Leave a comment</textarea>
-                        <input type="hidden" name="id" value="{{p.key().id()}}">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+        <div class="comment-section">
+            <h4 class="comment-header">Comments</h4>
+            <!-- comment section of post -->
+            <div class="post-comments">
+                <!-- comments of post -->
+                <div>
+                    {% for c in comments %}
+                        {{ c.render(uid) | safe }}
+                        <br>
+                    {% endfor %}
+                </div>
+                <!-- comments form -->
+                <div class="well">
+                    <form method="post">
+                        <div class="form-group">
+                            <textarea name="comment" class="form-control" rows="3">Leave a comment</textarea>
+                            <input type="hidden" name="id" value="{{p.key().id()}}">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
         <hr>

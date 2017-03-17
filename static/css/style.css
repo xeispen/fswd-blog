@@ -9,10 +9,10 @@ body {
 }
 
 
-h2 {
-
+hr {
+    margin-bottom: 12px;
+    margin-top: 12px;
 }
-
 
 .likes {
     position: absolute;
@@ -46,5 +46,15 @@ h2 {
 
 .title-logo{
     margin-top: 20px;
+}
+
+.comment {
+    padding-left: 20px;
+}
+
+.comment-header {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.4;
 }
 

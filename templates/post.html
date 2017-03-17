@@ -16,7 +16,7 @@
         </div>
         <!-- content of post -->
         <div class="post-content">{{p._render_text | safe}}</div>
-
+        <hr>
         <!-- footer of post -->
         <div class="btn-group post-footer row">
             <!-- delete button -->
@@ -41,11 +41,19 @@
                 <div class="likes"><span class="badge">{{p.likes}} Likes</span></div>
             </div>
         </div>
+        <br>
         <!-- hidden input with name of poster -->
         <input type="hidden" name="user" value="{{p.created_by.name}}">
-        <hr>
+        <h4 class="comment-header">Comments</h4>
         <!-- comment section of post -->
         <div class="post-comments">
+            <!-- comments of post -->
+            <div>
+                {% for c in comments %}
+                    {{ c.render(uid) | safe }}
+                    <br>
+                {% endfor %}
+            </div>
             <!-- comments form -->
             <div class="well">
                 <form method="post">
@@ -55,13 +63,6 @@
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
-            </div>
-            <!-- comments of post -->
-            <div>
-                {% for c in comments %}
-                    {{ c.render() | safe }}
-                    <br>
-                {% endfor %}
             </div>
         </div>
         <hr>

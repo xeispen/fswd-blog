@@ -129,12 +129,15 @@ class Comments(db.Model):
     post = db.IntegerProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
 
-    def render(self):
+    def render(self, user):
         """Retrieves and renders individual comments"""
         self._render_text = self.comment.replace('\n', '<br>')
         user_inst = User.by_id(self.user)
+        self.id = self.user
         self._user = user_inst.name
-        return render_str("comment.html", c=self)
+        # creates a dictionaty of post and comments for rendering
+        params = dict(c=self, uid=user)
+        return render_str("comment.html", **params)
 
     @classmethod
     def return_comments(cls, pid):

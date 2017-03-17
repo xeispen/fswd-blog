@@ -266,6 +266,7 @@ class EditPost(BlogHandler):
             self.redirect('/blog/signup')
 
 
+
 class LikePost(BlogHandler):
     """ Extends main blog handler to like a post"""
     @login_required
@@ -315,6 +316,86 @@ class UnlikePost(BlogHandler):
         else:
             self.redirect('/blog/signup')
 
+class EditComment(BlogHandler):
+    """ Extends main bloghandler class for editing comments """
+    @login_required
+    def get(self, comment_id):
+        """make a key, find the post with post_id from url, whose parent is blog_key
+            then makes sure that post is created by the user, if not, redirects
+        """
+        ckey = db.Key.from_path('Comments', int(comment_id), parent=blog_key())
+        comment = db.get(ckey)
+        pkey = db.Key.from_path('Post', int(comment.post), parent=blog_key())
+        post = db.get(pkey)
+
+        # adds html line breaks
+        post._render_text = post.content.replace('\n', '<br>')
+        # adds the user name to be used for rendering
+        post._name = post.created_by.name
+
+        if self.user:
+            uid = self.user.key().id()
+            if int(uid) == comment.user:
+                self.render('editcomment.html', p=post, c=comment)
+            else:
+                self.write("You can only edit your own comments")
+        else:
+            self.redirect('/blog/signup')
+
+    @login_required
+    def post(self, comment_id):
+        """ Method posts changes that the user has edited"""
+        ckey = db.Key.from_path('Comments', int(comment_id), parent=blog_key())
+        comment = db.get(ckey)
+        pkey = db.Key.from_path('Post', int(comment.post), parent=blog_key())
+        post = db.get(pkey)
+
+         # adds html line breaks
+        post._render_text = post.content.replace('\n', '<br>')
+        # adds the user name to be used for rendering
+        post._name = post.created_by.name
+
+        editedcomment = self.request.get('comment')
+
+
+        if self.user:
+            uid = self.user.key().id()
+            if int(uid) == comment.user:
+                if editedcomment:
+                    comment.comment = editedcomment
+                    comment.put()
+                    self.redirect('/blog/%s' % str(post.key().id()))
+                else:
+                    error = "Please enter edited comment, please!"
+                    self.render('editcomment.html', p=post, c=comment, error=error)
+            else:
+                self.write("You can only edit your own comments!")
+        else:
+            self.redirect('/blog/signup')
+
+
+class DeleteComment(BlogHandler):
+    """ Extends main bloghandler class for deleting post comments """
+    @login_required
+    def get(self, comment_id):
+        """ make a key, find the post with post_id from url,
+            whose parent is blog_key. Makes sure the user
+            does not delete someone else's post
+        """
+        ckey = db.Key.from_path('Comments', int(comment_id), parent=blog_key())
+        comment = db.get(ckey)
+        pkey = db.Key.from_path('Post', int(comment.post), parent=blog_key())
+        post = db.get(pkey)
+
+        if self.user:
+            uid = self.user.key().id()
+            if int(uid) == comment.user:
+                comment.delete()
+                return self.redirect('/blog/')
+            else:
+                self.write("You didn't make that comment!!!")
+        else:
+            self.redirect('/blog/signup')
 
 class Signup(BlogHandler):
     """ Extends mainbloghandler class for the signup page """
@@ -446,4 +527,6 @@ app = webapp2.WSGIApplication([('/blog', MainPage),
                                ('/blog/editpost/([0-9]+)', EditPost),
                                ('/blog/likepost/([0-9]+)', LikePost),
                                ('/blog/unlikepost/([0-9]+)', UnlikePost),
+                               ('/blog/editcomment/([0-9]+)', EditComment),
+                               ('/blog/deletecomment/([0-9]+)', DeleteComment),
                                ('/blog/myblog', MyBlog)], debug=True)
